@@ -2,6 +2,7 @@ package com.example.quizmarket.ui.quiz
 
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
@@ -42,6 +43,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.quizmarket.R
+import com.example.quizmarket.domain.models.AnswerRequest
+import com.example.quizmarket.domain.models.QuestionResponse
 import com.example.quizmarket.domain.models.QuizResponse
 import com.example.quizmarket.ui.theme.Pink200
 import com.example.quizmarket.ui.theme.QuizMarketTheme
@@ -49,16 +52,24 @@ import com.example.quizmarket.ui.аuthentication.composable.LoginField
 import org.koin.androidx.compose.koinViewModel
 
 class QuizPassingActivity : ComponentActivity() {
+
+    private lateinit var viewModel: QuizPassingViewModel
+    private var quiz: QuizResponse = QuizResponse()
+    private var questionsIndex: Int = 0
+
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             QuizMarketTheme {
                 val quiz = intent.getSerializableExtra("quiz", QuizResponse::class.java)
-                val viewModel: QuizPassingViewModel = koinViewModel()
+                viewModel = koinViewModel()
                 if (quiz != null) {
-                    viewModel.setQuiz(quiz)
-                    QuizScreen(viewModel = viewModel)
+                    this.quiz = quiz
+                    getSharedPreferences("JWT", MODE_PRIVATE).getString("JWT", null)?.let {
+                        viewModel.getAllQuizQuestionsByQuizId(it, quiz.id)
+                    }
+                    QuizScreen()
                 }
             }
         }
@@ -66,10 +77,8 @@ class QuizPassingActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun QuizScreen(viewModel: QuizPassingViewModel = koinViewModel()) {
+    fun QuizScreen() {
         val navController = rememberNavController()
-        val questionsIndex = remember { mutableStateOf(1) }
-        val quiz by viewModel.quiz.collectAsState()
 
         Scaffold(
             topBar = {
@@ -100,7 +109,7 @@ class QuizPassingActivity : ComponentActivity() {
                     .padding(paddingValues)
                     .fillMaxSize()
             ) {
-                NavGraph(navHostController = navController, questionsIndex = questionsIndex , viewModel = viewModel)
+                NavGraph(navHostController = navController)
             }
         }
     }
@@ -109,68 +118,77 @@ class QuizPassingActivity : ComponentActivity() {
     @Composable
     fun QuizQuestionScreen(
         navController: NavController,
-        viewModel: QuizPassingViewModel = koinViewModel(),
-        questionsIndex: MutableState<Int>
     ) {
-        val quiz by viewModel.quiz.collectAsState()
-        val answer = remember {
-            mutableStateOf("")
-        }
+        val questions by viewModel.questions.collectAsState()
+        val answers by viewModel.answers.collectAsState()
+        val answer = remember { mutableStateOf("") }
 
-        Column (modifier = Modifier.fillMaxSize()){
-            Card(
-                modifier = Modifier.padding(10.dp).fillMaxWidth()
-            ) {
-                Box(modifier = Modifier.padding(5.dp)) {
-                    Text(
-                        text = "What is 2 + 2?",
-                        color = Color.DarkGray,
-                        fontSize = 20.sp
-                    )
-                }
-            }
-            TextField(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxWidth(),
-                value = answer.value,
-                shape = RoundedCornerShape(15.dp),
-                textStyle = TextStyle(fontSize = 20.sp, color = Color.DarkGray),
-                singleLine = true,
-                onValueChange = { newValue -> answer.value = newValue },
-                colors = TextFieldDefaults.colors(
-                    focusedLabelColor = Color.DarkGray,
-                    disabledLabelColor = Color.Gray,
-                    unfocusedIndicatorColor = Color.White,
-                    focusedIndicatorColor = Color.White
-                ),
-                placeholder = { Text(text = answer.value) },
-            )
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.BottomStart
-            ){
-                Button(
+
+        if (questions.isNotEmpty()) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Card(
                     modifier = Modifier
+                        .padding(10.dp)
                         .fillMaxWidth()
-                        .padding(10.dp),
-                    onClick = {
-                        questionsIndex.value++
-                        if (quiz.countQuestions >= questionsIndex.value) {
-                            navController.navigate("QuizQuestionScreen")
-                        } else {
-                            finish()
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Pink200,
-                        contentColor = Color.White
-                    )
                 ) {
-                    if (quiz.countQuestions > questionsIndex.value) {
-                        Text(text = "Pass quiz", fontSize = 20.sp)
-                    } else {
-                        Text(text = "Finish Quiz", fontSize = 20.sp)
+                    Box(modifier = Modifier.padding(5.dp)) {
+                        Text(
+                            text = questions[questionsIndex].content,
+                            color = Color.DarkGray,
+                            fontSize = 20.sp
+                        )
+                    }
+                }
+                TextField(
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth(),
+                    value = answer.value,
+                    shape = RoundedCornerShape(15.dp),
+                    textStyle = TextStyle(fontSize = 20.sp, color = Color.DarkGray),
+                    singleLine = true,
+                    onValueChange = { newValue -> answer.value = newValue },
+                    colors = TextFieldDefaults.colors(
+                        focusedLabelColor = Color.DarkGray,
+                        disabledLabelColor = Color.Gray,
+                        unfocusedIndicatorColor = Color.White,
+                        focusedIndicatorColor = Color.White
+                    ),
+                    placeholder = { Text(text = answer.value) },
+                )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.BottomStart
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp),
+                        onClick = {
+                            answers.add(
+                                AnswerRequest(
+                                    listOf(answer.value),
+                                    questions[questionsIndex].id
+                                )
+                            )
+                            if (questionsIndex.toLong() == quiz.countQuestions - 1) {
+                                viewModel.passingQuiz()
+                                finish()
+                            } else {
+                                questionsIndex++
+                                navController.navigate("QuizQuestionScreen")
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Pink200,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        if (questionsIndex.toLong() == quiz.countQuestions - 1) {
+                            Text(text = "Finish Quiz", fontSize = 20.sp, color = Color.White)
+                        } else {
+                            Text(text = "Answer", fontSize = 20.sp, color = Color.White)
+                        }
                     }
                 }
             }
@@ -180,12 +198,10 @@ class QuizPassingActivity : ComponentActivity() {
     @Composable
     fun NavGraph(
         navHostController: NavHostController,
-        questionsIndex: MutableState<Int>,
-        viewModel: QuizPassingViewModel
     ) {
         NavHost(navController = navHostController, startDestination = "QuizQuestionScreen") {
             composable("QuizQuestionScreen") {
-                QuizQuestionScreen(navHostController, viewModel, questionsIndex)
+                QuizQuestionScreen(navHostController)
             }
         }
     }

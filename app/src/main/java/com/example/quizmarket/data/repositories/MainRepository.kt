@@ -4,6 +4,6 @@ import com.example.quizmarket.data.api.ApiService
 
 class MainRepository(private val apiService: ApiService) {
 
-    suspend fun getListOfQuizes() = apiService.getAllQuizes()
+    suspend fun getListOfQuizes(token: String) = apiService.getAllQuizes(token)
 
 }

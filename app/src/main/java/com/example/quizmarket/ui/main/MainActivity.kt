@@ -59,11 +59,20 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
+    private lateinit var viewModel: MainViewModel
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             QuizMarketTheme {
+                viewModel = koinViewModel()
+                getSharedPreferences(
+                    "accessToken",
+                    MODE_PRIVATE
+                ).getString("accessToken", null)?.let {
+                    viewModel.loadQuizes(it)
+                }
                 val navController = rememberNavController()
                 val quiz = remember { mutableStateOf(QuizResponse()) }
                 NavGraph(navHostController = navController, quiz = quiz)
@@ -141,7 +150,6 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun HomeScreen(
-        viewModel: MainViewModel = koinViewModel(),
         navController: NavController,
         quiz: MutableState<QuizResponse>
     ) {
@@ -221,9 +229,11 @@ class MainActivity : ComponentActivity() {
                 )
             }
         ) { paddingValues ->
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
                 Card(
                     modifier = Modifier.padding(10.dp),
                     colors = CardDefaults.cardColors(contentColor = Color.DarkGray)
@@ -240,7 +250,10 @@ class MainActivity : ComponentActivity() {
                             text = "Autor Nickname: ${quiz.value.authorNickname}",
                             fontSize = 20.sp
                         )
-                        Text(text = "Count question: ${quiz.value.countQuestions}", fontSize = 20.sp)
+                        Text(
+                            text = "Count question: ${quiz.value.countQuestions}",
+                            fontSize = 20.sp
+                        )
                         Text(
                             text = "Count of answers: ${quiz.value.countOfAnswers}",
                             fontSize = 20.sp
@@ -262,7 +275,10 @@ class MainActivity : ComponentActivity() {
                             .fillMaxWidth()
                             .padding(10.dp),
                         onClick = {
-                            Intent(applicationContext, QuizPassingActivity::class.java).also {intent ->
+                            Intent(
+                                applicationContext,
+                                QuizPassingActivity::class.java
+                            ).also { intent ->
                                 intent.putExtra("quiz", quiz.value)
                                 startActivity(intent)
                             }
@@ -288,7 +304,7 @@ class MainActivity : ComponentActivity() {
             composable(NavigationItem.Home.route) {
                 MainScreen(navController = navHostController, quiz = quiz)
             }
-            composable(NavigationItem.Quiz.route)  {
+            composable(NavigationItem.Quiz.route) {
                 QuizPreviewScreen(navController = navHostController, quiz = quiz)
             }
         }

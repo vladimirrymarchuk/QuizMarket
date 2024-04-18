@@ -16,14 +16,10 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
     val quizes: StateFlow<List<QuizResponse>> = _quizes
 
 
-    init {
-        loadQuizes()
-    }
-
-    private fun loadQuizes() {
+    fun loadQuizes(token: String) {
         viewModelScope.launch {
             _isLoading.value = true
-            _quizes.value = repository.getListOfQuizes()
+            _quizes.value = repository.getListOfQuizes(token)
             _quizes.value.sortedBy { it.countOfAnswers }
             _isLoading.value = false
         }

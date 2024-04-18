@@ -18,27 +18,32 @@ import com.example.quizmarket.ui.theme.QuizMarketTheme
 import com.example.quizmarket.ui.аuthentication.login.LoginActivity
 import com.example.quizmarket.ui.аuthentication.composable.LoginField
 import com.example.quizmarket.ui.аuthentication.composable.LoginButton
+import org.koin.androidx.compose.koinViewModel
 
 class RegistrationActivity : ComponentActivity() {
+    private lateinit var viewModel: RegistrationViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            QuizMarketTheme { RegistrationScreen() }
+            QuizMarketTheme {
+                viewModel = koinViewModel()
+                RegistrationScreen()
+            }
         }
     }
 
     @Composable
     fun RegistrationScreen() {
-        val regData = LinkedHashMap<String, MutableState<String>>().also {
-            it["username"] = remember {
-                mutableStateOf("")
-            }
-            it["email"] = remember {
-                mutableStateOf("")
-            }
-            it["password"] = remember {
-                mutableStateOf("")
-            }
+        val username = remember {
+            mutableStateOf("")
+        }
+
+        val email = remember {
+            mutableStateOf("")
+        }
+
+        val password = remember {
+            mutableStateOf("")
         }
 
         Column(
@@ -47,14 +52,12 @@ class RegistrationActivity : ComponentActivity() {
                 .background(color = Color.White),
             verticalArrangement = Arrangement.Center
         ) {
-            regData.forEach { item ->
-                LoginField(variable = item.value, label = item.key)
-            }
+            LoginField(variable = username, label = "username")
+            LoginField(variable = email, label = "email")
+            LoginField(variable = password, label = "password")
             LoginButton(title = "Registration") {
-                Intent(
-                    applicationContext,
-                    LoginActivity::class.java
-                ).also { intent -> startActivity(intent) }
+                viewModel.registration(username.value, email.value, password.value)
+                Intent(applicationContext, LoginActivity::class.java).also { intent -> startActivity(intent) }
             }
         }
     }
