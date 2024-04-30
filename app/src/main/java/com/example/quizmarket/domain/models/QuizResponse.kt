@@ -12,5 +12,4 @@ data class QuizResponse(
     val countOfAnswers: Long = 0,
     val authorNickname: String = "",
     val countOfPassing: String = ""
-) : Serializable {
-}
+) : Serializable

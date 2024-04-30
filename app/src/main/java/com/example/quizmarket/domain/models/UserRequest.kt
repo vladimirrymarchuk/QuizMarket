@@ -1,6 +1,6 @@
 package com.example.quizmarket.domain.models
 
-data class RegistrationRequest(
+data class UserRequest(
     val name: String,
     val email: String,
     val password: String,

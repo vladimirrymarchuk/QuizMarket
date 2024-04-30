@@ -17,7 +17,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.quiz.QuizPassingActivity"
+            android:name=".ui.quiz.create.CreateQuizActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.quiz.passing.QuizPassingActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.QuizMarket" />
@@ -36,14 +39,17 @@
             android:name=".ui.аuthentication.registration.RegistrationActivity"
             android:exported="true"
             android:label="@string/title_activity_registration"
-            android:theme="@style/Theme.QuizMarket">
-        </activity>
+            android:theme="@style/Theme.QuizMarket" />
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.QuizMarket">
-        </activity>
+            android:theme="@style/Theme.QuizMarket"/>
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.QuizMarket" />
     </application>
 
 </manifest>

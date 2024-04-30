@@ -9,4 +9,5 @@ sealed class NavigationItem(val title: String, val iconId: Int, val route: Strin
     object Quiz : NavigationItem("Quiz", R.drawable.test, "QuizPreview")
     object Search : NavigationItem("Search", R.drawable.search, "SearchPreview")
     object Builder : NavigationItem("Builder", R.drawable.builder, "BuilderPreview")
+    object LogOut : NavigationItem("Log out", R.drawable.logout, "")
 }

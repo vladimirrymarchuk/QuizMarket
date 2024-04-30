@@ -1,11 +1,11 @@
-package com.example.quizmarket.ui.quiz
+package com.example.quizmarket.ui.quiz.passing
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quizmarket.data.repositories.QuizPassingRepository
 import com.example.quizmarket.domain.models.AnswerRequest
 import com.example.quizmarket.domain.models.QuestionResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -17,13 +17,14 @@ class QuizPassingViewModel(private val repository: QuizPassingRepository) : View
     val answers = MutableStateFlow<MutableList<AnswerRequest>>(mutableListOf())
 
     fun getAllQuizQuestionsByQuizId(token: String, id: Long) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             _questions.value = repository.getAllQuizQuestionsByQuizId(token = token, quizId = id)
         }
     }
 
-    fun passingQuiz() {
-        viewModelScope.launch {
+    fun passQuiz(token: String, quizId: Long, userId: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.passQuiz(token = token, body = answers.value, quizId = quizId, userId = userId)
         }
     }
 }

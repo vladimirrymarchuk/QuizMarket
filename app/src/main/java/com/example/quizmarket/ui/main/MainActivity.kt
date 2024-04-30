@@ -7,6 +7,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,10 +23,15 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -51,8 +58,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.quizmarket.R
 import com.example.quizmarket.domain.models.QuizResponse
 import com.example.quizmarket.ui.main.items.NavigationItem
-import com.example.quizmarket.ui.main.navigation.Drawer
-import com.example.quizmarket.ui.quiz.QuizPassingActivity
+import com.example.quizmarket.ui.quiz.passing.QuizPassingActivity
+import com.example.quizmarket.ui.settings.SettingsActivity
 import com.example.quizmarket.ui.theme.Pink200
 import com.example.quizmarket.ui.theme.QuizMarketTheme
 import kotlinx.coroutines.launch
@@ -71,7 +78,7 @@ class MainActivity : ComponentActivity() {
                     "accessToken",
                     MODE_PRIVATE
                 ).getString("accessToken", null)?.let {
-                    viewModel.loadQuizes(it)
+                    viewModel.loadQuizzes(it)
                 }
                 val navController = rememberNavController()
                 val quiz = remember { mutableStateOf(QuizResponse()) }
@@ -86,14 +93,9 @@ class MainActivity : ComponentActivity() {
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
 
-        val drawerItems = listOf(
-            NavigationItem.Saved,
-            NavigationItem.Settings,
-        )
 
         Drawer(
             drawerState = drawerState,
-            items = drawerItems
         ) {
             Scaffold(
                 topBar = {
@@ -198,8 +200,8 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
-    fun BuilderScreen() {
-
+    fun ProfileScreen() {
+        /*TODO*/
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -293,6 +295,105 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    @Composable
+    fun Drawer(
+        drawerState: DrawerState,
+        content: @Composable () -> Unit
+    ) {
+        val scope = rememberCoroutineScope()
+        val items = listOf(
+            NavigationItem.Saved,
+            NavigationItem.Settings,
+            NavigationItem.LogOut
+        )
+
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            drawerContent = {
+                ModalDrawerSheet(
+                    drawerContainerColor = Color.White
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Pink200),
+                        horizontalArrangement = Arrangement.Absolute.SpaceBetween
+                    ) {
+                        Column{
+                            IconButton(onClick = { /*TODO*/ }) {
+
+                            }
+                        }
+                    }
+                    items[0].let {item ->
+                        NavigationDrawerItem(
+                            icon = {
+                                Icon(
+                                    painter = painterResource(id = item.iconId),
+                                    contentDescription = item.title
+                                )
+                            },
+                            label = { Text(item.title) },
+                            selected = false,
+                            onClick = { scope.launch { drawerState.close() } },
+                            colors = NavigationDrawerItemDefaults.colors(
+                                unselectedContainerColor = Color.White,
+                                unselectedIconColor = Color.Gray,
+                                unselectedTextColor = Color.Gray
+                            )
+                        )
+                    }
+                    items[1].let { item ->
+                        NavigationDrawerItem(
+                            icon = {
+                                Icon(
+                                    painter = painterResource(id = item.iconId),
+                                    contentDescription = item.title
+                                )
+                            },
+                            label = { Text(item.title) },
+                            selected = false,
+                            onClick = {
+                                Intent(applicationContext, SettingsActivity::class.java).also { intent ->
+                                    startActivity(intent)
+                                }
+                            },
+                            colors = NavigationDrawerItemDefaults.colors(
+                                unselectedContainerColor = Color.White,
+                                unselectedIconColor = Color.Gray,
+                                unselectedTextColor = Color.Gray
+                            )
+                        )
+                    }
+                    items[2].let { item ->
+                        NavigationDrawerItem(
+                            icon = {
+                                Icon(
+                                    painter = painterResource(id = item.iconId),
+                                    contentDescription = item.title
+                                )
+                            },
+                            label = { Text(item.title) },
+                            selected = false,
+                            onClick = {
+                                getSharedPreferences("accessToken", MODE_PRIVATE).edit().putString("accessToken", "").apply()
+                                finish()
+                            },
+                            colors = NavigationDrawerItemDefaults.colors(
+                                unselectedContainerColor = Color.White,
+                                unselectedIconColor = Color.Gray,
+                                unselectedTextColor = Color.Gray
+                            )
+                        )
+                    }
+                }
+            },
+            content = {
+                content()
+            }
+        )
     }
 
     @Composable

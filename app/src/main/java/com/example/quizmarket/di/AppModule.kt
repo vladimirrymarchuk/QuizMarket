@@ -5,8 +5,10 @@ import com.example.quizmarket.data.repositories.LoginRepository
 import com.example.quizmarket.data.repositories.MainRepository
 import com.example.quizmarket.data.repositories.QuizPassingRepository
 import com.example.quizmarket.data.repositories.RegistrationRepository
+import com.example.quizmarket.data.repositories.SettingsRepository
 import com.example.quizmarket.ui.main.MainViewModel
-import com.example.quizmarket.ui.quiz.QuizPassingViewModel
+import com.example.quizmarket.ui.quiz.passing.QuizPassingViewModel
+import com.example.quizmarket.ui.settings.SettingsViewModel
 import com.example.quizmarket.ui.аuthentication.login.LoginViewModel
 import com.example.quizmarket.ui.аuthentication.registration.RegistrationViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -31,10 +33,12 @@ val appModule = module {
     single { LoginRepository(get()) }
     single { MainRepository(get()) }
     single { QuizPassingRepository(get()) }
+    single { SettingsRepository(get()) }
 
     // ViewModels
     viewModel { RegistrationViewModel(get()) }
     viewModel { LoginViewModel(get()) }
     viewModel { MainViewModel(get()) }
     viewModel { QuizPassingViewModel(get()) }
+    viewModel { SettingsViewModel(get()) }
 }

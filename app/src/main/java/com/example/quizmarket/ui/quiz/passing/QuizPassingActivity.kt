@@ -1,8 +1,7 @@
-package com.example.quizmarket.ui.quiz
+package com.example.quizmarket.ui.quiz.passing
 
 import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
@@ -25,7 +24,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,18 +42,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.quizmarket.R
 import com.example.quizmarket.domain.models.AnswerRequest
-import com.example.quizmarket.domain.models.QuestionResponse
 import com.example.quizmarket.domain.models.QuizResponse
 import com.example.quizmarket.ui.theme.Pink200
 import com.example.quizmarket.ui.theme.QuizMarketTheme
-import com.example.quizmarket.ui.аuthentication.composable.LoginField
 import org.koin.androidx.compose.koinViewModel
 
 class QuizPassingActivity : ComponentActivity() {
-
     private lateinit var viewModel: QuizPassingViewModel
-    private var quiz: QuizResponse = QuizResponse()
+    private lateinit var quiz: QuizResponse
     private var questionsIndex: Int = 0
+    private lateinit var token: String
+    private var userId: Long = 0
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,9 +61,11 @@ class QuizPassingActivity : ComponentActivity() {
             QuizMarketTheme {
                 val quiz = intent.getSerializableExtra("quiz", QuizResponse::class.java)
                 viewModel = koinViewModel()
+                token = getSharedPreferences("accessToken", MODE_PRIVATE).getString("accessToken", "").toString()
+                userId = getSharedPreferences("userId", MODE_PRIVATE).getLong("userId", 0)
                 if (quiz != null) {
                     this.quiz = quiz
-                    getSharedPreferences("JWT", MODE_PRIVATE).getString("JWT", null)?.let {
+                    getSharedPreferences("accessToken", MODE_PRIVATE).getString("accessToken", "")?.let {
                         viewModel.getAllQuizQuestionsByQuizId(it, quiz.id)
                     }
                     QuizScreen()
@@ -123,7 +122,6 @@ class QuizPassingActivity : ComponentActivity() {
         val answers by viewModel.answers.collectAsState()
         val answer = remember { mutableStateOf("") }
 
-
         if (questions.isNotEmpty()) {
             Column(modifier = Modifier.fillMaxSize()) {
                 Card(
@@ -172,7 +170,7 @@ class QuizPassingActivity : ComponentActivity() {
                                 )
                             )
                             if (questionsIndex.toLong() == quiz.countQuestions - 1) {
-                                viewModel.passingQuiz()
+                                viewModel.passQuiz(token, quiz.id, userId)
                                 finish()
                             } else {
                                 questionsIndex++

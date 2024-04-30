@@ -34,17 +34,9 @@ class RegistrationActivity : ComponentActivity() {
 
     @Composable
     fun RegistrationScreen() {
-        val username = remember {
-            mutableStateOf("")
-        }
-
-        val email = remember {
-            mutableStateOf("")
-        }
-
-        val password = remember {
-            mutableStateOf("")
-        }
+        val username = remember { mutableStateOf("") }
+        val email = remember { mutableStateOf("") }
+        val password = remember { mutableStateOf("") }
 
         Column(
             modifier = Modifier

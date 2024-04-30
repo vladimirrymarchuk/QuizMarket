@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun LoginField(
     variable: MutableState<String>,
-    label: String = "",
-    ){
+    label: String = ""
+){
     TextField(
         value = variable.value,
         shape = RoundedCornerShape(15.dp),
