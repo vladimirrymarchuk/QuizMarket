@@ -1,4 +1,4 @@
-package com.example.quizmarket.ui.аuthentication.composable
+package com.example.quizmarket.ui.composable
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 import com.example.quizmarket.ui.theme.Pink200
 
 @Composable
-fun LoginButton(title: String, onClick: () -> Unit) {
+fun QuizMarketButton(title: String, onClick: () -> Unit) {
     Button(
         modifier = Modifier
             .fillMaxWidth()

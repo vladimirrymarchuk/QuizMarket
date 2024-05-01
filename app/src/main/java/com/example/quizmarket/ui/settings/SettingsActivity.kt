@@ -42,6 +42,8 @@ import androidx.lifecycle.lifecycleScope
 import com.example.quizmarket.R
 import com.example.quizmarket.domain.models.UserRequest
 import com.example.quizmarket.domain.models.UserResponse
+import com.example.quizmarket.ui.composable.PasswordField
+import com.example.quizmarket.ui.composable.QuizMarketTextField
 import com.example.quizmarket.ui.theme.Pink200
 import com.example.quizmarket.ui.theme.QuizMarketTheme
 import kotlinx.coroutines.launch
@@ -127,25 +129,13 @@ class SettingsActivity : ComponentActivity() {
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    TextField(
-                        value = username.value,
-                        shape = RoundedCornerShape(15.dp),
-                        textStyle = TextStyle(fontSize = 20.sp, color = Color.DarkGray),
-                        onValueChange = { newText -> username.value = newText },
-                        singleLine = true,
-                        colors = TextFieldDefaults.colors(
-                            focusedLabelColor = Color.DarkGray,
-                            disabledLabelColor = Color.Gray,
-                            unfocusedIndicatorColor = Color.White,
-                            focusedIndicatorColor = Color.White
-                        ),
-                        label = { Text(text = "username") },
-                        modifier = Modifier
-                            .padding(horizontal = 5.dp, vertical = 15.dp)
-                            .fillMaxWidth(0.85F)
-                    )
+                    Box(
+                        modifier = Modifier.padding(5.dp).fillMaxWidth(0.85F)
+                    ){
+                        QuizMarketTextField(variable = username, label = "username")
+                    }
                     IconButton(
-                        modifier = Modifier.padding(horizontal = 5.dp, vertical = 15.dp),
+                        modifier = Modifier.padding(horizontal = 5.dp, vertical = 7.dp),
                         onClick = {
                             viewModel.updateUser(
                                 token,
@@ -170,25 +160,13 @@ class SettingsActivity : ComponentActivity() {
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    TextField(
-                        value = email.value,
-                        shape = RoundedCornerShape(15.dp),
-                        textStyle = TextStyle(fontSize = 20.sp, color = Color.DarkGray),
-                        onValueChange = { newText -> email.value = newText },
-                        singleLine = true,
-                        colors = TextFieldDefaults.colors(
-                            focusedLabelColor = Color.DarkGray,
-                            disabledLabelColor = Color.Gray,
-                            unfocusedIndicatorColor = Color.White,
-                            focusedIndicatorColor = Color.White
-                        ),
-                        label = { Text(text = "email") },
-                        modifier = Modifier
-                            .padding(horizontal = 5.dp, vertical = 15.dp)
-                            .fillMaxWidth(0.85F)
-                    )
+                    Box(
+                        modifier = Modifier.padding(5.dp).fillMaxWidth(0.85F)
+                    ){
+                        QuizMarketTextField(variable = email, label = "email")
+                    }
                     IconButton(
-                        modifier = Modifier.padding(horizontal = 5.dp, vertical = 15.dp),
+                        modifier = Modifier.padding(horizontal = 5.dp, vertical = 7.dp),
                         onClick = {
                             viewModel.updateUser(
                                 token,
@@ -211,25 +189,13 @@ class SettingsActivity : ComponentActivity() {
                     }
                 }
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    TextField(
-                        value = password.value,
-                        shape = RoundedCornerShape(15.dp),
-                        textStyle = TextStyle(fontSize = 20.sp, color = Color.DarkGray),
-                        onValueChange = { newText -> password.value = newText },
-                        singleLine = true,
-                        colors = TextFieldDefaults.colors(
-                            focusedLabelColor = Color.DarkGray,
-                            disabledLabelColor = Color.Gray,
-                            unfocusedIndicatorColor = Color.White,
-                            focusedIndicatorColor = Color.White
-                        ),
-                        label = { Text(text = "password") },
-                        modifier = Modifier
-                            .padding(horizontal = 5.dp, vertical = 15.dp)
-                            .fillMaxWidth(0.85F)
-                    )
+                    Box(
+                        modifier = Modifier.padding(5.dp).fillMaxWidth(0.85F)
+                    ){
+                        PasswordField(variable = password)
+                    }
                     IconButton(
-                        modifier = Modifier.padding(horizontal = 5.dp, vertical = 15.dp),
+                        modifier = Modifier.padding(horizontal = 5.dp, vertical = 7.dp),
                         onClick = {
                             viewModel.updateUser(
                                 token,

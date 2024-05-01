@@ -1,4 +1,4 @@
-package com.example.quizmarket.ui.аuthentication.composable
+package com.example.quizmarket.ui.composable
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun LoginField(
+fun QuizMarketTextField(
     variable: MutableState<String>,
     label: String = ""
 ){
@@ -35,6 +35,5 @@ fun LoginField(
         label = { Text(text = label) },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 15.dp, vertical = 5.dp)
     )
 }

@@ -7,19 +7,22 @@ import androidx.activity.compose.setContent
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
-import com.example.quizmarket.ui.аuthentication.composable.LoginButton
-import com.example.quizmarket.ui.аuthentication.composable.LoginField
+import com.example.quizmarket.ui.composable.QuizMarketButton
+import com.example.quizmarket.ui.composable.QuizMarketTextField
 import com.example.quizmarket.ui.main.MainActivity
 import com.example.quizmarket.ui.theme.QuizMarketTheme
-import com.example.quizmarket.ui.аuthentication.composable.PasswordField
+import com.example.quizmarket.ui.composable.PasswordField
 import com.example.quizmarket.ui.аuthentication.registration.RegistrationActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -82,16 +85,20 @@ class LoginActivity : ComponentActivity() {
                 .background(color = Color.White),
             verticalArrangement = Arrangement.Center
         ) {
-            LoginField(variable = email, label = "email")
-            PasswordField(variable = password)
-            LoginButton(
+            Box(modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)){
+                QuizMarketTextField(variable = email, label = "email")
+            }
+            Box(modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)){
+                PasswordField(variable = password)
+            }
+            QuizMarketButton(
                 title = "Log in",
                 onClick = {
                     viewModel.login(email.value, password.value)
                     this@LoginActivity.password = password.value
                 }
             )
-            LoginButton(
+            QuizMarketButton(
                 title = "Registration",
                 onClick = {
                     Intent(applicationContext, RegistrationActivity::class.java).also { intent ->

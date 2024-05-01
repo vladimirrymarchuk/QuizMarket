@@ -58,6 +58,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.quizmarket.R
 import com.example.quizmarket.domain.models.QuizResponse
 import com.example.quizmarket.ui.main.items.NavigationItem
+import com.example.quizmarket.ui.quiz.create.QuizConstructorActivity
 import com.example.quizmarket.ui.quiz.passing.QuizPassingActivity
 import com.example.quizmarket.ui.settings.SettingsActivity
 import com.example.quizmarket.ui.theme.Pink200
@@ -118,7 +119,16 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         actions = {
-                            IconButton(onClick = { /*TODO*/ }) {
+                            IconButton(
+                                onClick = {
+                                    Intent(
+                                        applicationContext,
+                                        QuizConstructorActivity::class.java
+                                    ).also { intent ->
+                                        startActivity(intent)
+                                    }
+                                }
+                            ) {
                                 Icon(
                                     painter = painterResource(id = NavigationItem.Builder.iconId),
                                     contentDescription = NavigationItem.Builder.title,
@@ -126,7 +136,9 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                             IconButton(
-                                onClick = { },
+                                onClick = {
+
+                                },
                             ) {
                                 Icon(
                                     painter = painterResource(id = NavigationItem.Search.iconId),
@@ -321,13 +333,13 @@ class MainActivity : ComponentActivity() {
                             .background(Pink200),
                         horizontalArrangement = Arrangement.Absolute.SpaceBetween
                     ) {
-                        Column{
+                        Column {
                             IconButton(onClick = { /*TODO*/ }) {
 
                             }
                         }
                     }
-                    items[0].let {item ->
+                    items[0].let { item ->
                         NavigationDrawerItem(
                             icon = {
                                 Icon(
@@ -356,7 +368,10 @@ class MainActivity : ComponentActivity() {
                             label = { Text(item.title) },
                             selected = false,
                             onClick = {
-                                Intent(applicationContext, SettingsActivity::class.java).also { intent ->
+                                Intent(
+                                    applicationContext,
+                                    SettingsActivity::class.java
+                                ).also { intent ->
                                     startActivity(intent)
                                 }
                             },
@@ -378,7 +393,8 @@ class MainActivity : ComponentActivity() {
                             label = { Text(item.title) },
                             selected = false,
                             onClick = {
-                                getSharedPreferences("accessToken", MODE_PRIVATE).edit().putString("accessToken", "").apply()
+                                getSharedPreferences("accessToken", MODE_PRIVATE).edit()
+                                    .putString("accessToken", "").apply()
                                 finish()
                             },
                             colors = NavigationDrawerItemDefaults.colors(

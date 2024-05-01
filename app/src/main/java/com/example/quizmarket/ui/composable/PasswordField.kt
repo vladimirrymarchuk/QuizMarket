@@ -1,4 +1,4 @@
-package com.example.quizmarket.ui.аuthentication.composable
+package com.example.quizmarket.ui.composable
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -47,8 +47,7 @@ fun PasswordField(variable: MutableState<String>) {
         ),
         label = { Text(text = "password") },
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 15.dp, vertical = 5.dp),
+            .fillMaxWidth(),
         trailingIcon = {
             val image = if (passwordVisible) painterResource(id = R.drawable.visibility) else painterResource(id = R.drawable.visibility_off)
 
