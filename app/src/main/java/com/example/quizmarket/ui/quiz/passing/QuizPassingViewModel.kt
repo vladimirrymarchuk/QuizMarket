@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.quizmarket.data.repositories.QuizPassingRepository
 import com.example.quizmarket.domain.models.AnswerRequest
 import com.example.quizmarket.domain.models.QuestionResponse
+import com.example.quizmarket.domain.models.QuizRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,6 +26,12 @@ class QuizPassingViewModel(private val repository: QuizPassingRepository) : View
     fun passQuiz(token: String, quizId: Long, userId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.passQuiz(token = token, body = answers.value, quizId = quizId, userId = userId)
+        }
+    }
+
+    fun updateQuizInfo(token: String, quizId: Long, updateQuiz: QuizRequest) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateQuizInfo(token, quizId, updateQuiz)
         }
     }
 }

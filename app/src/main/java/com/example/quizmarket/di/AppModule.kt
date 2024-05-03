@@ -3,11 +3,13 @@ package com.example.quizmarket.di
 import com.example.quizmarket.data.api.ApiService
 import com.example.quizmarket.data.repositories.LoginRepository
 import com.example.quizmarket.data.repositories.MainRepository
+import com.example.quizmarket.data.repositories.MyQuizzesRepository
 import com.example.quizmarket.data.repositories.QuizConstructorRepository
 import com.example.quizmarket.data.repositories.QuizPassingRepository
 import com.example.quizmarket.data.repositories.RegistrationRepository
 import com.example.quizmarket.data.repositories.SettingsRepository
 import com.example.quizmarket.ui.main.MainViewModel
+import com.example.quizmarket.ui.myQuizzes.MyQuizzesViewModel
 import com.example.quizmarket.ui.quiz.create.QuizConstructorViewModel
 import com.example.quizmarket.ui.quiz.passing.QuizPassingViewModel
 import com.example.quizmarket.ui.settings.SettingsViewModel
@@ -24,7 +26,7 @@ val appModule = module {
     // Retrofit
     single {
         Retrofit.Builder()
-            .baseUrl("http://192.168.1.68:8000/")
+            .baseUrl("http://192.168.1.68:8000")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
@@ -37,6 +39,7 @@ val appModule = module {
     single { QuizPassingRepository(get()) }
     single { SettingsRepository(get()) }
     single { QuizConstructorRepository(get()) }
+    single { MyQuizzesRepository(get()) }
 
     // ViewModels
     viewModel { RegistrationViewModel(get()) }
@@ -45,4 +48,5 @@ val appModule = module {
     viewModel { QuizPassingViewModel(get()) }
     viewModel { SettingsViewModel(get()) }
     viewModel { QuizConstructorViewModel(get()) }
+    viewModel { MyQuizzesViewModel(get())}
 }

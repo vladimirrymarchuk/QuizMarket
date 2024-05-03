@@ -2,6 +2,7 @@ package com.example.quizmarket.data.repositories
 
 import com.example.quizmarket.data.api.ApiService
 import com.example.quizmarket.domain.models.AnswerRequest
+import com.example.quizmarket.domain.models.QuizRequest
 
 class QuizPassingRepository(private val apiService: ApiService) {
 
@@ -13,4 +14,5 @@ class QuizPassingRepository(private val apiService: ApiService) {
     ) = apiService.passQuiz(token, body, quizId, userId)
 
     suspend fun getAllQuizQuestionsByQuizId(token: String, quizId: Long) = apiService.getAllQuizQuestionsByQuizId(token, quizId)
+    suspend fun updateQuizInfo(token: String, quizId: Long, body: QuizRequest) = apiService.updateQuizInfo(token, quizId, body)
 }

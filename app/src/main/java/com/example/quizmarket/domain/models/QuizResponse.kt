@@ -5,7 +5,7 @@ import java.io.Serializable
 data class QuizResponse(
     val id: Long = 0,
     val createdAt: String = "",
-    val title: String = "",
+    var title: String = "",
     val type: String = "",
     val description: String = "",
     val countQuestions: Long = 0,

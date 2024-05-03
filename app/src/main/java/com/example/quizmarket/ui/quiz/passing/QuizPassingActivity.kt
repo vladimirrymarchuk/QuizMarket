@@ -35,6 +35,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -42,7 +43,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.quizmarket.R
 import com.example.quizmarket.domain.models.AnswerRequest
+import com.example.quizmarket.domain.models.QuizRequest
 import com.example.quizmarket.domain.models.QuizResponse
+import com.example.quizmarket.ui.composable.QuizMarketTextField
 import com.example.quizmarket.ui.theme.Pink200
 import com.example.quizmarket.ui.theme.QuizMarketTheme
 import org.koin.androidx.compose.koinViewModel
@@ -76,7 +79,7 @@ class QuizPassingActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun QuizScreen() {
+    private fun QuizScreen() {
         val navController = rememberNavController()
 
         Scaffold(
@@ -115,7 +118,7 @@ class QuizPassingActivity : ComponentActivity() {
 
 
     @Composable
-    fun QuizQuestionScreen(
+    private fun QuizQuestionScreen(
         navController: NavController,
     ) {
         val questions by viewModel.questions.collectAsState()
@@ -123,13 +126,16 @@ class QuizPassingActivity : ComponentActivity() {
         val answer = remember { mutableStateOf("") }
 
         if (questions.isNotEmpty()) {
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier
+                .padding(10.dp)
+                .fillMaxSize()) {
+                Text(text = "Question:", fontSize = 20.sp, color = Color.DarkGray)
                 Card(
                     modifier = Modifier
-                        .padding(10.dp)
                         .fillMaxWidth()
+                        .padding(bottom = 25.dp)
                 ) {
-                    Box(modifier = Modifier.padding(5.dp)) {
+                    Box(modifier = Modifier.padding(10.dp)) {
                         Text(
                             text = questions[questionsIndex].content,
                             color = Color.DarkGray,
@@ -137,31 +143,15 @@ class QuizPassingActivity : ComponentActivity() {
                         )
                     }
                 }
-                TextField(
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .fillMaxWidth(),
-                    value = answer.value,
-                    shape = RoundedCornerShape(15.dp),
-                    textStyle = TextStyle(fontSize = 20.sp, color = Color.DarkGray),
-                    singleLine = true,
-                    onValueChange = { newValue -> answer.value = newValue },
-                    colors = TextFieldDefaults.colors(
-                        focusedLabelColor = Color.DarkGray,
-                        disabledLabelColor = Color.Gray,
-                        unfocusedIndicatorColor = Color.White,
-                        focusedIndicatorColor = Color.White
-                    ),
-                    placeholder = { Text(text = answer.value) },
-                )
+                Text(text = "Enter Answer:", fontSize = 20.sp, color = Color.DarkGray)
+                QuizMarketTextField(variable = answer, label = "Answer")
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.BottomStart
                 ) {
                     Button(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(10.dp),
+                            .fillMaxWidth(),
                         onClick = {
                             answers.add(
                                 AnswerRequest(
@@ -171,6 +161,19 @@ class QuizPassingActivity : ComponentActivity() {
                             )
                             if (questionsIndex.toLong() == quiz.countQuestions - 1) {
                                 viewModel.passQuiz(token, quiz.id, userId)
+                                viewModel.updateQuizInfo(
+                                    token,
+                                    quiz.id,
+                                    QuizRequest(
+                                        title = quiz.title,
+                                        type = quiz.type,
+                                        description = quiz.description,
+                                        countQuestions = quiz.countQuestions,
+                                        countOfAnswers = quiz.countOfAnswers,
+                                        authorNickname = quiz.authorNickname,
+                                        countOfPassing = (quiz.countOfPassing.toLong() + 1).toString()
+                                    )
+                                )
                                 finish()
                             } else {
                                 questionsIndex++
@@ -194,7 +197,7 @@ class QuizPassingActivity : ComponentActivity() {
     }
 
     @Composable
-    fun NavGraph(
+    private fun NavGraph(
         navHostController: NavHostController,
     ) {
         NavHost(navController = navHostController, startDestination = "QuizQuestionScreen") {

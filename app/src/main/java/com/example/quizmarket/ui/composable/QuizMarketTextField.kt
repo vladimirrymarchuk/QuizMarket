@@ -18,14 +18,15 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun QuizMarketTextField(
     variable: MutableState<String>,
-    label: String = ""
+    label: String = "",
+    singleLine: Boolean = true
 ){
     TextField(
         value = variable.value,
         shape = RoundedCornerShape(15.dp),
         textStyle = TextStyle(fontSize = 20.sp, color = Color.DarkGray),
         onValueChange = { newText -> variable.value = newText },
-        singleLine = true,
+        singleLine = singleLine,
         colors = TextFieldDefaults.colors(
             focusedLabelColor = Color.DarkGray,
             disabledLabelColor = Color.Gray,

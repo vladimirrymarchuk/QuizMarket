@@ -21,9 +21,12 @@
             android:exported="false"
             android:theme="@style/Theme.QuizMarket"/>
         <activity
+            android:name=".ui.myQuizzes.MyQuizzesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.QuizMarket"/>
+        <activity
             android:name=".ui.quiz.passing.QuizPassingActivity"
             android:exported="false"
-            android:label="@string/title_activity_main"
             android:theme="@style/Theme.QuizMarket" />
         <activity
             android:name=".ui.аuthentication.login.LoginActivity"
@@ -39,17 +42,14 @@
         <activity
             android:name=".ui.аuthentication.registration.RegistrationActivity"
             android:exported="true"
-            android:label="@string/title_activity_registration"
             android:theme="@style/Theme.QuizMarket" />
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.QuizMarket"/>
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:exported="false"
-            android:label="@string/title_activity_main"
             android:theme="@style/Theme.QuizMarket" />
     </application>
 

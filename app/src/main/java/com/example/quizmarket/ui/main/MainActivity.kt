@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
@@ -34,6 +35,8 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
@@ -48,6 +51,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -57,7 +61,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.quizmarket.R
 import com.example.quizmarket.domain.models.QuizResponse
+import com.example.quizmarket.ui.composable.QuizMarketTextField
 import com.example.quizmarket.ui.main.items.NavigationItem
+import com.example.quizmarket.ui.myQuizzes.MyQuizzesActivity
 import com.example.quizmarket.ui.quiz.create.QuizConstructorActivity
 import com.example.quizmarket.ui.quiz.passing.QuizPassingActivity
 import com.example.quizmarket.ui.settings.SettingsActivity
@@ -68,6 +74,7 @@ import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     private lateinit var viewModel: MainViewModel
+    private lateinit var token: String
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,12 +82,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             QuizMarketTheme {
                 viewModel = koinViewModel()
-                getSharedPreferences(
+                token = getSharedPreferences(
                     "accessToken",
                     MODE_PRIVATE
-                ).getString("accessToken", null)?.let {
-                    viewModel.loadQuizzes(it)
-                }
+                ).getString("accessToken", "").toString()
+                viewModel.loadQuizzes(token)
                 val navController = rememberNavController()
                 val quiz = remember { mutableStateOf(QuizResponse()) }
                 NavGraph(navHostController = navController, quiz = quiz)
@@ -93,7 +99,13 @@ class MainActivity : ComponentActivity() {
     fun MainScreen(navController: NavController, quiz: MutableState<QuizResponse>) {
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
-
+        val isSearching = remember {
+            mutableStateOf(false)
+        }
+        val search = remember {
+            mutableStateOf("")
+        }
+        val quizzes by viewModel.quizzes.collectAsState()
 
         Drawer(
             drawerState = drawerState,
@@ -119,25 +131,60 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         actions = {
-                            IconButton(
-                                onClick = {
-                                    Intent(
-                                        applicationContext,
-                                        QuizConstructorActivity::class.java
-                                    ).also { intent ->
-                                        startActivity(intent)
+                            if (!isSearching.value) {
+                                IconButton(
+                                    onClick = {
+                                        viewModel.loadQuizzes(token = token)
                                     }
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.restore),
+                                        contentDescription = "restore",
+                                        tint = Color.White
+                                    )
                                 }
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = NavigationItem.Builder.iconId),
-                                    contentDescription = NavigationItem.Builder.title,
-                                    tint = Color.White
-                                )
+                                IconButton(
+                                    onClick = {
+                                        Intent(
+                                            applicationContext,
+                                            QuizConstructorActivity::class.java
+                                        ).also { intent ->
+                                            startActivity(intent)
+                                        }
+                                    }
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = NavigationItem.Builder.iconId),
+                                        contentDescription = NavigationItem.Builder.title,
+                                        tint = Color.White
+                                    )
+                                }
+                            } else {
+                                Box(modifier = Modifier.fillMaxWidth(0.75f)) {
+                                    TextField(
+                                        value = search.value,
+                                        shape = RoundedCornerShape(15.dp),
+                                        textStyle = TextStyle(
+                                            fontSize = 20.sp,
+                                            color = Color.DarkGray
+                                        ),
+                                        onValueChange = { newText -> search.value = newText },
+                                        singleLine = true,
+                                        colors = TextFieldDefaults.colors(
+                                            focusedLabelColor = Color.DarkGray,
+                                            disabledLabelColor = Color.Gray,
+                                            unfocusedIndicatorColor = Pink200,
+                                            focusedIndicatorColor = Pink200
+                                        ),
+                                        placeholder = { Text(text = "Search") },
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                    )
+                                }
                             }
                             IconButton(
                                 onClick = {
-
+                                    isSearching.value = !isSearching.value
                                 },
                             ) {
                                 Icon(
@@ -146,7 +193,6 @@ class MainActivity : ComponentActivity() {
                                     tint = Color.White
                                 )
                             }
-
                         },
                     )
                 },
@@ -154,7 +200,37 @@ class MainActivity : ComponentActivity() {
                 Box(
                     modifier = Modifier.padding(it)
                 ) {
-                    HomeScreen(navController = navController, quiz = quiz)
+                    if (!isSearching.value) {
+                        HomeScreen(navController = navController, quiz = quiz)
+                    } else {
+                        val item = quizzes.find { it.title == search.value }
+                        if (item != null) {
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(5.dp),
+                                onClick = {
+                                    quiz.value = item
+                                    navController.navigate(NavigationItem.Quiz.route)
+                                }
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.test),
+                                        contentDescription = "test",
+                                        tint = Color.DarkGray
+                                    )
+                                    Text(
+                                        text = item.title,
+                                        fontSize = 20.sp,
+                                        color = Color.DarkGray
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -167,7 +243,7 @@ class MainActivity : ComponentActivity() {
         navController: NavController,
         quiz: MutableState<QuizResponse>
     ) {
-        val quizes by viewModel.quizes.collectAsState()
+        val quizzes by viewModel.quizzes.collectAsState()
         val isLoading by viewModel.isLoading.collectAsState()
 
         if (isLoading) {
@@ -179,8 +255,8 @@ class MainActivity : ComponentActivity() {
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(quizes.size) { i ->
-                    quizes[i].let { item ->
+                items(quizzes.size) { i ->
+                    quizzes[i].let { item ->
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -211,10 +287,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @Composable
-    fun ProfileScreen() {
-        /*TODO*/
-    }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -265,7 +337,7 @@ class MainActivity : ComponentActivity() {
                             fontSize = 20.sp
                         )
                         Text(
-                            text = "Count question: ${quiz.value.countQuestions}",
+                            text = "Count questions: ${quiz.value.countQuestions}",
                             fontSize = 20.sp
                         )
                         Text(
@@ -316,7 +388,7 @@ class MainActivity : ComponentActivity() {
     ) {
         val scope = rememberCoroutineScope()
         val items = listOf(
-            NavigationItem.Saved,
+            NavigationItem.MyQuiz,
             NavigationItem.Settings,
             NavigationItem.LogOut
         )
@@ -349,7 +421,14 @@ class MainActivity : ComponentActivity() {
                             },
                             label = { Text(item.title) },
                             selected = false,
-                            onClick = { scope.launch { drawerState.close() } },
+                            onClick = {
+                                Intent(
+                                    applicationContext,
+                                    MyQuizzesActivity::class.java
+                                ).also { intent ->
+                                    startActivity(intent)
+                                }
+                            },
                             colors = NavigationDrawerItemDefaults.colors(
                                 unselectedContainerColor = Color.White,
                                 unselectedIconColor = Color.Gray,
