@@ -1,17 +1,16 @@
 package com.example.quizmarket.data.api
 
-import com.example.quizmarket.domain.models.AnswerRequest
-import com.example.quizmarket.domain.models.AnswerResponse
-import com.example.quizmarket.domain.models.AuthRequest
-import com.example.quizmarket.domain.models.AuthResponse
-import com.example.quizmarket.domain.models.DeleteResponse
-import com.example.quizmarket.domain.models.QuestionResponse
-import com.example.quizmarket.domain.models.QuizRequest
-import com.example.quizmarket.domain.models.QuizResponse
-import com.example.quizmarket.domain.models.UserRequest
-import com.example.quizmarket.domain.models.UserResponse
+import com.example.quizmarket.domain.models.requests.AnswerRequest
+import com.example.quizmarket.domain.models.response.AnswerResponse
+import com.example.quizmarket.domain.models.requests.AuthRequest
+import com.example.quizmarket.domain.models.response.AuthResponse
+import com.example.quizmarket.domain.models.response.DeleteResponse
+import com.example.quizmarket.domain.models.response.QuestionResponse
+import com.example.quizmarket.domain.models.requests.QuizRequest
+import com.example.quizmarket.domain.models.response.QuizResponse
+import com.example.quizmarket.domain.models.requests.UserRequest
+import com.example.quizmarket.domain.models.response.UserResponse
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.Header

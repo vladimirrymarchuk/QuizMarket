@@ -1,4 +1,4 @@
-package com.example.quizmarket.domain.models
+package com.example.quizmarket.domain.models.requests
 
 data class QuizRequest(
     val title: String,

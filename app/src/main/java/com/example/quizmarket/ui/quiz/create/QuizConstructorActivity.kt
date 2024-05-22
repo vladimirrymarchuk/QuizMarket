@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,16 +44,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.quizmarket.R
-import com.example.quizmarket.domain.models.QuizRequest
+import com.example.quizmarket.domain.models.requests.QuizRequest
 import com.example.quizmarket.ui.composable.QuizMarketTextField
 import com.example.quizmarket.ui.theme.Pink200
 import com.example.quizmarket.ui.theme.QuizMarketTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 
 class QuizConstructorActivity : ComponentActivity() {
-    private lateinit var viewModel: QuizConstructorViewModel
+    private val viewModel: QuizConstructorViewModel by viewModel()
     private var questionsIndex: Long = 0
     private var countQuestions: Long = 0
     private lateinit var token: String
@@ -61,7 +62,6 @@ class QuizConstructorActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             QuizMarketTheme {
-                viewModel = koinViewModel()
                 token =
                     getSharedPreferences("accessToken", MODE_PRIVATE).getString("accessToken", "")
                         .toString()

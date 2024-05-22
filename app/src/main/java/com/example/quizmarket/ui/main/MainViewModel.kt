@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quizmarket.data.repositories.MainRepository
-import com.example.quizmarket.domain.models.QuizResponse
+import com.example.quizmarket.domain.models.response.QuizResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

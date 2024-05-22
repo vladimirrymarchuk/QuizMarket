@@ -1,4 +1,4 @@
-package com.example.quizmarket.domain.models
+package com.example.quizmarket.domain.models.response
 
 data class AnswerResponse(
     val id: Long,

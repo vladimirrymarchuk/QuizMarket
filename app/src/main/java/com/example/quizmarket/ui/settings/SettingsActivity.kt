@@ -40,8 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.example.quizmarket.R
-import com.example.quizmarket.domain.models.UserRequest
-import com.example.quizmarket.domain.models.UserResponse
+import com.example.quizmarket.domain.models.requests.UserRequest
+import com.example.quizmarket.domain.models.response.UserResponse
 import com.example.quizmarket.ui.composable.PasswordField
 import com.example.quizmarket.ui.composable.QuizMarketTextField
 import com.example.quizmarket.ui.theme.Pink200
@@ -50,9 +50,11 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.properties.Delegates
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class SettingsActivity : ComponentActivity() {
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by viewModel()
     private var userId: Long = 0
     private lateinit var token: String
     private lateinit var password: String
@@ -60,7 +62,6 @@ class SettingsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             QuizMarketTheme {
-                viewModel = koinViewModel()
                 token =
                     getSharedPreferences("accessToken", MODE_PRIVATE).getString("accessToken", "")
                         .toString()

@@ -4,10 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quizmarket.data.repositories.MyQuizzesRepository
-import com.example.quizmarket.domain.models.AnswerResponse
-import com.example.quizmarket.domain.models.QuizRequest
-import com.example.quizmarket.domain.models.QuizResponse
-import com.example.quizmarket.domain.models.UserResponse
+import com.example.quizmarket.domain.models.response.AnswerResponse
+import com.example.quizmarket.domain.models.requests.QuizRequest
+import com.example.quizmarket.domain.models.response.QuizResponse
+import com.example.quizmarket.domain.models.response.UserResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -53,7 +53,6 @@ class MyQuizzesViewModel(private val repository: MyQuizzesRepository) : ViewMode
 
     fun deleteQuiz(token: String, quiz: QuizResponse) {
         viewModelScope.launch(Dispatchers.IO) {
-            _isDeleting.value = true
             repository.deleteQuiz(
                 token,
                 quiz.id,
@@ -67,7 +66,6 @@ class MyQuizzesViewModel(private val repository: MyQuizzesRepository) : ViewMode
                     countOfPassing = quiz.countOfPassing
                 )
             )
-            _isDeleting.value = false
         }
     }
 
@@ -79,9 +77,7 @@ class MyQuizzesViewModel(private val repository: MyQuizzesRepository) : ViewMode
 
     fun allWhoPassed(token: String, quizId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            _isLoading.value = true
             _users.value = repository.allWhoPassed(token, quizId)
-            _isLoading.value = false
         }
     }
 

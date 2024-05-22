@@ -1,7 +1,7 @@
 package com.example.quizmarket.data.repositories
 
 import com.example.quizmarket.data.api.ApiService
-import com.example.quizmarket.domain.models.UserRequest
+import com.example.quizmarket.domain.models.requests.UserRequest
 
 class SettingsRepository(private val apiService: ApiService) {
     suspend fun loadUser(userId: Long) = apiService.loadUser(userId)

@@ -1,11 +1,10 @@
 package com.example.quizmarket.ui.settings
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quizmarket.data.repositories.SettingsRepository
-import com.example.quizmarket.domain.models.UserRequest
-import com.example.quizmarket.domain.models.UserResponse
+import com.example.quizmarket.domain.models.requests.UserRequest
+import com.example.quizmarket.domain.models.response.UserResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

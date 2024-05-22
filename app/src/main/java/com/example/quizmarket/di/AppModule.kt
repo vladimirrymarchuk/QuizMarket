@@ -6,15 +6,13 @@ import com.example.quizmarket.data.repositories.MainRepository
 import com.example.quizmarket.data.repositories.MyQuizzesRepository
 import com.example.quizmarket.data.repositories.QuizConstructorRepository
 import com.example.quizmarket.data.repositories.QuizPassingRepository
-import com.example.quizmarket.data.repositories.RegistrationRepository
 import com.example.quizmarket.data.repositories.SettingsRepository
 import com.example.quizmarket.ui.main.MainViewModel
 import com.example.quizmarket.ui.myQuizzes.MyQuizzesViewModel
 import com.example.quizmarket.ui.quiz.create.QuizConstructorViewModel
 import com.example.quizmarket.ui.quiz.passing.QuizPassingViewModel
 import com.example.quizmarket.ui.settings.SettingsViewModel
-import com.example.quizmarket.ui.аuthentication.login.LoginViewModel
-import com.example.quizmarket.ui.аuthentication.registration.RegistrationViewModel
+import com.example.quizmarket.ui.auth.AuthViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -33,7 +31,6 @@ val appModule = module {
     }
 
     // Repositories
-    single { RegistrationRepository(get()) }
     single { LoginRepository(get()) }
     single { MainRepository(get()) }
     single { QuizPassingRepository(get()) }
@@ -42,8 +39,7 @@ val appModule = module {
     single { MyQuizzesRepository(get()) }
 
     // ViewModels
-    viewModel { RegistrationViewModel(get()) }
-    viewModel { LoginViewModel(get()) }
+    viewModel { AuthViewModel(get()) }
     viewModel { MainViewModel(get()) }
     viewModel { QuizPassingViewModel(get()) }
     viewModel { SettingsViewModel(get()) }

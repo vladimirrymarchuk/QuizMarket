@@ -1,7 +1,7 @@
 package com.example.quizmarket.data.repositories
 
 import com.example.quizmarket.data.api.ApiService
-import com.example.quizmarket.domain.models.QuizRequest
+import com.example.quizmarket.domain.models.requests.QuizRequest
 
 class QuizConstructorRepository(private val apiService: ApiService) {
     suspend fun createQuiz(token: String, newQuiz: QuizRequest) = apiService.createQuiz(token, newQuiz)

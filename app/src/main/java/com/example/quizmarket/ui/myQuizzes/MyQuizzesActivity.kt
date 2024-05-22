@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -34,15 +33,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.quizmarket.R
-import com.example.quizmarket.domain.models.QuizRequest
-import com.example.quizmarket.domain.models.QuizResponse
-import com.example.quizmarket.domain.models.UserResponse
+import com.example.quizmarket.domain.models.requests.QuizRequest
+import com.example.quizmarket.domain.models.response.QuizResponse
+import com.example.quizmarket.domain.models.response.UserResponse
 import com.example.quizmarket.ui.composable.QuizMarketTextField
 import com.example.quizmarket.ui.main.items.NavigationItem
 import com.example.quizmarket.ui.theme.Pink200
@@ -50,15 +50,16 @@ import com.example.quizmarket.ui.theme.QuizMarketTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class MyQuizzesActivity : ComponentActivity() {
-    private lateinit var viewModel: MyQuizzesViewModel
+    private val viewModel by viewModel<MyQuizzesViewModel>()
     private var userId: Long = 0
     private lateinit var token: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            viewModel = koinViewModel()
             token =
                 getSharedPreferences("accessToken", MODE_PRIVATE).getString("accessToken", "")
                     .toString()
@@ -271,7 +272,8 @@ class MyQuizzesActivity : ComponentActivity() {
                     items(answers.size) { index ->
                         Card(
                             modifier = Modifier
-                                .fillMaxWidth().padding(vertical = 5.dp),
+                                .fillMaxWidth()
+                                .padding(vertical = 5.dp),
                         ) {
                             Row(
                                 modifier = Modifier
@@ -334,7 +336,9 @@ class MyQuizzesActivity : ComponentActivity() {
             ) {
                 Column {
                     Row(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 5.dp)
                     ) {
                         Box(
                             modifier = Modifier
@@ -384,7 +388,9 @@ class MyQuizzesActivity : ComponentActivity() {
                         }
                     }
                     Row(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding()
                     ) {
                         Box(
                             modifier = Modifier
@@ -434,7 +440,8 @@ class MyQuizzesActivity : ComponentActivity() {
                         items(users.size) { index ->
                             Card(
                                 modifier = Modifier
-                                    .fillMaxWidth().padding(vertical = 5.dp),
+                                    .fillMaxWidth()
+                                    .padding(vertical = 5.dp),
                                 onClick = {
                                     user.value = users[index]
                                     navController.navigate("AllAnswersScreen")

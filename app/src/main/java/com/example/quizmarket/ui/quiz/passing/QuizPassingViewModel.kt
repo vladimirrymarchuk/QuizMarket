@@ -3,9 +3,9 @@ package com.example.quizmarket.ui.quiz.passing
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quizmarket.data.repositories.QuizPassingRepository
-import com.example.quizmarket.domain.models.AnswerRequest
-import com.example.quizmarket.domain.models.QuestionResponse
-import com.example.quizmarket.domain.models.QuizRequest
+import com.example.quizmarket.domain.models.requests.AnswerRequest
+import com.example.quizmarket.domain.models.response.QuestionResponse
+import com.example.quizmarket.domain.models.requests.QuizRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

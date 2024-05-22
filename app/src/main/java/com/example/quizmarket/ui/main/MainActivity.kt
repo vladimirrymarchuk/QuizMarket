@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -60,8 +61,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.quizmarket.R
-import com.example.quizmarket.domain.models.QuizResponse
-import com.example.quizmarket.ui.composable.QuizMarketTextField
+import com.example.quizmarket.domain.models.response.QuizResponse
 import com.example.quizmarket.ui.main.items.NavigationItem
 import com.example.quizmarket.ui.myQuizzes.MyQuizzesActivity
 import com.example.quizmarket.ui.quiz.create.QuizConstructorActivity
@@ -70,10 +70,10 @@ import com.example.quizmarket.ui.settings.SettingsActivity
 import com.example.quizmarket.ui.theme.Pink200
 import com.example.quizmarket.ui.theme.QuizMarketTheme
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModel()
     private lateinit var token: String
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -81,7 +81,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             QuizMarketTheme {
-                viewModel = koinViewModel()
                 token = getSharedPreferences(
                     "accessToken",
                     MODE_PRIVATE

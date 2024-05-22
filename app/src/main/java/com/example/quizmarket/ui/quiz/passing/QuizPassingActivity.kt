@@ -4,13 +4,13 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -19,8 +19,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -32,26 +30,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.quizmarket.R
-import com.example.quizmarket.domain.models.AnswerRequest
-import com.example.quizmarket.domain.models.QuizRequest
-import com.example.quizmarket.domain.models.QuizResponse
+import com.example.quizmarket.domain.models.requests.AnswerRequest
+import com.example.quizmarket.domain.models.requests.QuizRequest
+import com.example.quizmarket.domain.models.response.QuizResponse
 import com.example.quizmarket.ui.composable.QuizMarketTextField
 import com.example.quizmarket.ui.theme.Pink200
 import com.example.quizmarket.ui.theme.QuizMarketTheme
 import org.koin.androidx.compose.koinViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class QuizPassingActivity : ComponentActivity() {
-    private lateinit var viewModel: QuizPassingViewModel
+    private val viewModel: QuizPassingViewModel by viewModel()
     private lateinit var quiz: QuizResponse
     private var questionsIndex: Int = 0
     private lateinit var token: String
@@ -63,7 +61,6 @@ class QuizPassingActivity : ComponentActivity() {
         setContent {
             QuizMarketTheme {
                 val quiz = intent.getSerializableExtra("quiz", QuizResponse::class.java)
-                viewModel = koinViewModel()
                 token = getSharedPreferences("accessToken", MODE_PRIVATE).getString("accessToken", "").toString()
                 userId = getSharedPreferences("userId", MODE_PRIVATE).getLong("userId", 0)
                 if (quiz != null) {
