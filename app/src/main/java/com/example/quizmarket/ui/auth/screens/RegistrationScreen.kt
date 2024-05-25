@@ -25,8 +25,7 @@ fun RegistrationScreen(viewModel: AuthViewModel = koinViewModel()) {
     val username = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
-    val context = LocalContext.current
-    val activity = context as RegistrationActivity
+    val activity = LocalContext.current as RegistrationActivity
 
     Column(
         modifier = Modifier
@@ -34,13 +33,13 @@ fun RegistrationScreen(viewModel: AuthViewModel = koinViewModel()) {
             .background(color = Color.White),
         verticalArrangement = Arrangement.Center
     ) {
-        Box(modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)){
+        Box(modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)) {
             QuizMarketTextField(variable = username, label = "username")
         }
-        Box(modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)){
+        Box(modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)) {
             QuizMarketTextField(variable = email, label = "email")
         }
-        Box(modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)){
+        Box(modifier = Modifier.padding(horizontal = 15.dp, vertical = 5.dp)) {
             PasswordField(variable = password)
         }
         QuizMarketButton(title = "Registration") {

@@ -1,4 +1,4 @@
-package com.example.quizmarket.ui.main.items
+package com.example.quizmarket.ui.main.navigation
 
 import com.example.quizmarket.R
 

@@ -18,18 +18,15 @@ import com.example.quizmarket.ui.composable.PasswordField
 import com.example.quizmarket.ui.composable.QuizMarketButton
 import com.example.quizmarket.ui.composable.QuizMarketTextField
 import com.example.quizmarket.ui.auth.AuthViewModel
+import com.example.quizmarket.ui.auth.LoginActivity
 import com.example.quizmarket.ui.auth.RegistrationActivity
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen(viewModel: AuthViewModel = koinViewModel()) {
-    val email = remember {
-        mutableStateOf("")
-    }
-    val password = remember {
-        mutableStateOf("")
-    }
-    val context = LocalContext.current
+    val email = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
+    val activity = LocalContext.current as LoginActivity
 
     Column(
         modifier = Modifier
@@ -53,8 +50,8 @@ fun LoginScreen(viewModel: AuthViewModel = koinViewModel()) {
         QuizMarketButton(
             title = "Registration",
             onClick = {
-                Intent(context, RegistrationActivity::class.java).also {
-                    context.startActivity(it)
+                Intent(activity, RegistrationActivity::class.java).also { intent ->
+                    activity.startActivity(intent)
                 }
             }
         )

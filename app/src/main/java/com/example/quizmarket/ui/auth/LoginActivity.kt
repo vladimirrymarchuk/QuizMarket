@@ -28,12 +28,9 @@ class LoginActivity : ComponentActivity() {
     }
 
     private fun initSubscribe() {
-        Log.i("dslsfa;j2", "slkdfa2")
         lifecycleScope.launch {
             viewModel.authResponse.collect { authResponse ->
-                Log.i("dslsfa;j", "slkdfa")
                 if (authResponse.accessToken != "" && "Ошибка" !in authResponse.accessToken) {
-                    Log.d("id", authResponse.userId.toString())
                     saveJWT(authResponse.accessToken, authResponse.userId)
                     Intent(applicationContext, MainActivity::class.java).also { intent -> startActivity(intent) }
                     finish()

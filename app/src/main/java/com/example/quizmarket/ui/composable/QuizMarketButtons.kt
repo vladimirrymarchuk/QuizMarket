@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.quizmarket.ui.theme.Pink200
+import com.example.quizmarket.ui.theme.Pinklight
 
 @Composable
 fun QuizMarketButton(title: String, onClick: () -> Unit) {
@@ -20,7 +20,7 @@ fun QuizMarketButton(title: String, onClick: () -> Unit) {
             .fillMaxWidth()
             .padding(top = 5.dp, start = 15.dp, end = 15.dp),
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(Pink200)
+        colors = ButtonDefaults.buttonColors(Pinklight)
     ) {
         Text(
             text = title,

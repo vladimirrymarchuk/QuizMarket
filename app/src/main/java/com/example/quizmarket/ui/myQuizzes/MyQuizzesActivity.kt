@@ -33,7 +33,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -44,12 +43,11 @@ import com.example.quizmarket.domain.models.requests.QuizRequest
 import com.example.quizmarket.domain.models.response.QuizResponse
 import com.example.quizmarket.domain.models.response.UserResponse
 import com.example.quizmarket.ui.composable.QuizMarketTextField
-import com.example.quizmarket.ui.main.items.NavigationItem
-import com.example.quizmarket.ui.theme.Pink200
+import com.example.quizmarket.ui.main.navigation.NavigationItem
+import com.example.quizmarket.ui.theme.Pinklight
 import com.example.quizmarket.ui.theme.QuizMarketTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -114,7 +112,7 @@ class MyQuizzesActivity : ComponentActivity() {
             topBar = {
                 TopAppBar(
                     title = { Text(text = "My quizzes", color = Color.White) },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Pink200),
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Pinklight),
                     navigationIcon = {
                         IconButton(
                             onClick = {
@@ -199,7 +197,7 @@ class MyQuizzesActivity : ComponentActivity() {
                                     viewModel.deleteQuiz(token, item)
                                     initSubscribeDelete()
                                 },
-                                colors = IconButtonDefaults.iconButtonColors(containerColor = Pink200)
+                                colors = IconButtonDefaults.iconButtonColors(containerColor = Pinklight)
                             ) {
                                 Icon(
                                     painter = painterResource(R.drawable.delete),
@@ -246,7 +244,7 @@ class MyQuizzesActivity : ComponentActivity() {
             topBar = {
                 TopAppBar(
                     title = { Text(text = user.value.name, color = Color.White) },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Pink200),
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Pinklight),
                     navigationIcon = {
                         IconButton(
                             onClick = {
@@ -312,7 +310,7 @@ class MyQuizzesActivity : ComponentActivity() {
             topBar = {
                 TopAppBar(
                     title = { Text(text = "Quiz", color = Color.White) },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Pink200),
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Pinklight),
                     navigationIcon = {
                         IconButton(
                             onClick = {
@@ -378,7 +376,7 @@ class MyQuizzesActivity : ComponentActivity() {
                                     countOfPassing = quiz.value.countOfPassing
                                 )
                             },
-                            colors = IconButtonDefaults.iconButtonColors(containerColor = if (title.value == quiz.value.title) Color.LightGray else Pink200)
+                            colors = IconButtonDefaults.iconButtonColors(containerColor = if (title.value == quiz.value.title) Color.LightGray else Pinklight)
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.check),
@@ -426,7 +424,7 @@ class MyQuizzesActivity : ComponentActivity() {
                                     countOfPassing = quiz.value.countOfPassing
                                 )
                             },
-                            colors = IconButtonDefaults.iconButtonColors(containerColor = if (description.value == quiz.value.description) Color.LightGray else Pink200)
+                            colors = IconButtonDefaults.iconButtonColors(containerColor = if (description.value == quiz.value.description) Color.LightGray else Pinklight)
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.check),

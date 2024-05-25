@@ -21,7 +21,6 @@ class AuthViewModel(private val repository: LoginRepository) : ViewModel() {
     fun login(email: String, password: String) {
         viewModelScope.launch(Dispatchers.IO) {
             _authResponse.value = repository.login(AuthRequest(email, password))
-            Log.d("jwt", authResponse.value.accessToken)
         }
     }
 

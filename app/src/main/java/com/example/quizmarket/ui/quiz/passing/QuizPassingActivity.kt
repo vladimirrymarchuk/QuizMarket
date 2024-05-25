@@ -4,7 +4,6 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,9 +41,8 @@ import com.example.quizmarket.domain.models.requests.AnswerRequest
 import com.example.quizmarket.domain.models.requests.QuizRequest
 import com.example.quizmarket.domain.models.response.QuizResponse
 import com.example.quizmarket.ui.composable.QuizMarketTextField
-import com.example.quizmarket.ui.theme.Pink200
+import com.example.quizmarket.ui.theme.Pinklight
 import com.example.quizmarket.ui.theme.QuizMarketTheme
-import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -96,7 +94,7 @@ class QuizPassingActivity : ComponentActivity() {
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Pink200,
+                        containerColor = Pinklight,
                         navigationIconContentColor = Color.White,
                         titleContentColor = Color.White
                     )
@@ -178,7 +176,7 @@ class QuizPassingActivity : ComponentActivity() {
                             }
                         },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Pink200,
+                            containerColor = Pinklight,
                             contentColor = Color.White
                         )
                     ) {

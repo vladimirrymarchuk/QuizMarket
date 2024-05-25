@@ -1,8 +1,6 @@
 package com.example.quizmarket.ui.settings
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -11,9 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,8 +16,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -33,23 +26,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.lifecycleScope
 import com.example.quizmarket.R
 import com.example.quizmarket.domain.models.requests.UserRequest
-import com.example.quizmarket.domain.models.response.UserResponse
 import com.example.quizmarket.ui.composable.PasswordField
 import com.example.quizmarket.ui.composable.QuizMarketTextField
-import com.example.quizmarket.ui.theme.Pink200
+import com.example.quizmarket.ui.theme.Pinklight
 import com.example.quizmarket.ui.theme.QuizMarketTheme
-import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.properties.Delegates
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -115,7 +99,7 @@ class SettingsActivity : ComponentActivity() {
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Pink200,
+                        containerColor = Pinklight,
                         navigationIconContentColor = Color.White,
                         titleContentColor = Color.White
                     )
@@ -149,7 +133,7 @@ class SettingsActivity : ComponentActivity() {
                                 )
                             )
                         },
-                        colors = IconButtonDefaults.iconButtonColors(containerColor = if (username.value == user.name) Color.LightGray else Pink200)
+                        colors = IconButtonDefaults.iconButtonColors(containerColor = if (username.value == user.name) Color.LightGray else Pinklight)
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.check),
@@ -180,7 +164,7 @@ class SettingsActivity : ComponentActivity() {
                                 )
                             )
                         },
-                        colors = IconButtonDefaults.iconButtonColors(containerColor = if (email.value == user.email) Color.LightGray else Pink200)
+                        colors = IconButtonDefaults.iconButtonColors(containerColor = if (email.value == user.email) Color.LightGray else Pinklight)
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.check),
@@ -214,7 +198,7 @@ class SettingsActivity : ComponentActivity() {
                                     .toString()
                         },
                         colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = if (password.value == this@SettingsActivity.password) Color.LightGray else Pink200
+                            containerColor = if (password.value == this@SettingsActivity.password) Color.LightGray else Pinklight
                         )
                     ) {
                         Icon(

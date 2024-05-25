@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,7 +45,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.quizmarket.R
 import com.example.quizmarket.domain.models.requests.QuizRequest
 import com.example.quizmarket.ui.composable.QuizMarketTextField
-import com.example.quizmarket.ui.theme.Pink200
+import com.example.quizmarket.ui.theme.Pinklight
 import com.example.quizmarket.ui.theme.QuizMarketTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -95,7 +94,7 @@ class QuizConstructorActivity : ComponentActivity() {
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Pink200,
+                        containerColor = Pinklight,
                         navigationIconContentColor = Color.White,
                         titleContentColor = Color.White
                     )
@@ -226,7 +225,7 @@ class QuizConstructorActivity : ComponentActivity() {
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Pink200,
+                        containerColor = Pinklight,
                         contentColor = Color.White
                     )
                 ) {
@@ -305,7 +304,7 @@ class QuizConstructorActivity : ComponentActivity() {
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Pink200,
+                        containerColor = Pinklight,
                         contentColor = Color.White
                     )
                 ) {
